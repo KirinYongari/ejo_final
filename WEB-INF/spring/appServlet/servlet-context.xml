@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- 프로젝트내에 참조할 수 있는 경로 (classpath:/) -->
+	
+	
+	<!--스프링의 mvc에서 제공하는 각종 어노테이션을 감시하고 적절한 객체들을 빈으로 등록된다.  
+	<mvc:annotation-driven>
+	spring-mvc가 제공하는 어노테이션을 감지/분석.처리하는 객체를 생성해서 스프링의 빈으로 등록한다.
+	-->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<!-- 
+		JSP를 뷰페이지 (뷰 템플릿)로 사용하는 spring mvc 웹 애플리케이션에서는 요청 핸들러
+		메소드가 반환하는 뷰 이름(String값)을 실제  JSP로 해석하는 뷰리졸브를 스프링의 빈으로 등록한다.
+	 -->
+	<mvc:view-resolvers>
+		<mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
+	</mvc:view-resolvers>
+	
+	<!--multipartResolver 빈 등록 
+		클라이언트에서 서버로 데이터를 전달한다.
+		전달 방식과 상과없이 데이터를 뽑아 낸다.
+		multipart 요청을 처리한다.
+		빈의 이름은 반드시 "multipartResolver"로 지정한다.
+		파일 업로드에 사용한 라이브러리와 연관있는 멀티파트 리졸버를 등록한다.
+	-->
+	
+	<!-- 인터셉터등록 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/user/login.do"/>
+			<mvc:exclude-mapping path="/home.do"/>
+			<mvc:exclude-mapping path="/user/registerform.do"/>
+			<mvc:exclude-mapping path="/user/register.do"/>
+			<mvc:exclude-mapping path="/user/idCheck.do"/>
+			<mvc:exclude-mapping path="/art/artPage.do"/>
+			<mvc:exclude-mapping path="/art/detail.do"/>
+			<mvc:exclude-mapping path="/art/pagePlus.do"/>
+			<mvc:exclude-mapping path="/art/performanceCheck.do"/>
+			<mvc:exclude-mapping path="/art/performanceSeat.do"/>
+			<mvc:exclude-mapping path="/open/openTicket.do"/>
+			<mvc:exclude-mapping path="/open/openSearch.do"/>
+			<mvc:exclude-mapping path="/search/modalSearch.do"/>
+			<mvc:exclude-mapping path="/open/openTicketPlus.do"/>
+			<mvc:exclude-mapping path="/music/form.do"/>
+			<mvc:exclude-mapping path="/home-concert-lastest.do"/>
+			<mvc:exclude-mapping path="/home-concert-popular.do"/>
+			<mvc:exclude-mapping path="/home-act-lastest.do"/>
+			<mvc:exclude-mapping path="/home-act-popular.do"/>
+			<mvc:exclude-mapping path="/art/openIfream.do"/>
+			<mvc:exclude-mapping path="/art/openAjax.do"/>
+			<mvc:exclude-mapping path="/music/*"/>
+			
+			<bean class="kr.co.jhta.controller.interceptor.LoginCheckHandlerInterceptor"></bean>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**"/>
+			
+			<bean class="kr.co.jhta.controller.interceptor.AdminCheckHandlerInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!--  
+		클라이언트의 요청을 처리할 요청핸들러 클래스(컨트롤러 클래스)를 전부 스캔해서 스프링의 빈으로 등록한다.
+		* 스프링의 빈으로 등록된 컨트롤러들은 URL요청이 접수되면
+		프론트 컨트롤러가 그 요청을 해석해서 적절한 컨트롤러를 스프링 컨테이너에서 찾아서
+		요청  URL과 매핑된 요청핸들러 메소드를 자동으로 실행한다.
+	-->
+	<context:component-scan base-package="kr.co.jhta.controller" />
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSizePerFile" value="10485760" />
+	</bean>
+	
+	<context:property-placeholder location="classpath:/META-INF/spring/config.properties"/>
+	
+</beans>

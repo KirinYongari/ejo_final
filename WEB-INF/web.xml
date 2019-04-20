@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+ 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+  			classpath:/META-INF/spring/context-comm.xml
+			classpath:/META-INF/spring/context-datasource.xml
+			classpath:/META-INF/spring/context-mybatis.xml
+		</param-value> 
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>	
+	
+  	<filter>
+  	<filter-name>encodingFilter</filter-name>
+  	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  	<init-param>
+  	<!--어떤 인코딩 방식을 사용할지 지정한다.  -->
+  		<param-name>encoding</param-name>
+  		<param-value>UTF-8</param-value>
+  	</init-param>
+  	<init-param>
+  	<!--
+  		encoding값이 있고, forceEncoding이 true면
+  			HttpServletRequest와 HttpServletResponce에 지정된 인코딩값으로 강제 셋팅된다.
+  		encoding값이 있고, forceEncoding이 false면
+  			HttpServletRequest와 getCharsetEncoding()의 실행결과가 null일때만	
+  			지정된 인코딩값으로 셋팅한다.
+  	  -->
+  		<param-name>forceEncoding</param-name>
+  		<param-value>true</param-value>
+  	</init-param>
+  </filter>
+  <filter-mapping>
+  	<filter-name>encodingFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+  	<servlet-name>frontControllerServlet</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<init-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>
+			/WEB-INF/spring/appServlet/servlet-context.xml
+			
+  		</param-value>
+  	</init-param>
+  	<!--load-on-startup : 1 작성시  톰캣만 켜도 서블릿객체가 생성되고 초기화된다. 
+  		숫자가 작을 수록 우선순위가 높아 진다.  
+  	-->
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>frontControllerServlet</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+   <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <include-prelude>/WEB-INF/views/include/common.jsp</include-prelude>
+    </jsp-property-group>
+  </jsp-config>
+  
+</web-app>
