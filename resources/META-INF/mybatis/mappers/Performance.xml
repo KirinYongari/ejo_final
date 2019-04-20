@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.PerformanceDao">
+
+	<select id="getPerformanceByConcertNo" parameterType="int" resultType="Performance">
+		select
+			A.performance_no		as no,
+			A.performance_day		as day,
+			A.performance_time		as time,
+			B.hall_no				as "hall.no",
+			B.hall_name				as "hall.name",
+			B.hall_address			as "hall.address",
+			B.hall_tel				as "hall.tel",
+			B.hall_seat_number		as "hall.seatNumber",
+			C.concert_no			as "concert.no",
+			C.concert_title			as "concert.title"
+			
+		from
+			 performances A, halls B, concerts C
+		where
+			A.hall_no = B.hall_no
+			and A.concert_no = C.concert_no
+			and C.concert_no = #{value}
+	</select>
+	
+	
+	
+	
+	<select id="getPerformanceByNo" parameterType="int" resultType="Performance">
+		select
+			A.performance_no		as no,
+			A.performance_day		as day,
+			A.performance_time		as time,
+			B.hall_no				as "hall.no",
+			B.hall_name				as "hall.name",
+			B.hall_address			as "hall.address",
+			B.hall_tel				as "hall.tel",
+			B.hall_seat_number		as "hall.seatNumber",
+			C.concert_no			as "concert.no",
+			C.concert_title			as "concert.title"
+			
+		from
+			 performances A, halls B, concerts C
+		where
+			A.hall_no = B.hall_no
+			and A.concert_no = C.concert_no
+			and A.performance_no = #{value}
+	</select>
+	
+	<!-- 공연 번호에 맞는 공연 획득 -->
+	<select id="getPerfByConNo" parameterType="int" resultType="Performance">
+		select 
+			A.performance_no					as no,
+			A.performance_day					as day,
+			A.performance_time					as time,
+			A.performance_restSeatCount			as restSeatCount,
+			B.hall_no							as "hall.no",
+			B.hall_name							as "hall.name",
+			B.hall_address						as "hall.address",
+			B.hall_tel							as "hall.tel",
+			B.hall_seat_number					as "hall.seatNumber",
+			C.concert_no                        as "concert.no",
+		    C.concert_title                     as "concert.title",
+		    C.concert_artist                    as "concert.artist",
+		    C.concert_agency                    as "concert.agency",
+		    C.concert_genre                     as "concert.genre",
+		    C.concert_cover_img                 as "concert.coverImg",
+		    C.concert_content                   as "concert.content",
+		    C.concert_content_img               as "concert.contentImg",
+		    C.concert_available                 as "concert.available",
+		    C.concert_ticket_open_date          as "concert.ticketOpenDate",
+		    C.concert_ticket_close_date         as "concert.ticketCloseDate",
+		    C.concert_price                     as "concert.price",
+		    C.concert_open_date                 as "concert.openDate",
+		    C.concert_close_date                as "concert.closeDate",
+		    C.concert_create_date               as "concert.createDate",
+		    C.concert_likes                     as "concert.likes",
+		    C.cate_no                           as "concert.cateNo"
+		from
+			performances A, halls B, concerts C
+		where
+			A.hall_no = B.hall_no
+		and
+			A.concert_no = C.concert_no
+		and
+			C.concert_available = 'Y'
+		and
+			C.cate_no = 1
+		and
+			C.concert_no = #{value}
+		order by
+			A.performance_no
+	</select>
+	
+	<!-- 모든 콘서트 공연정보 획득 -->
+	<select id="getAllPerfs" resultType="Performance">
+		select
+			A.performance_no					as no,
+			A.performance_day					as day,
+			A.performance_time					as time,
+			A.performance_restSeatCount			as restSeatCount,
+			B.hall_no							as "hall.no",
+			B.hall_name							as "hall.name",
+			B.hall_address						as "hall.address",
+			B.hall_tel							as "hall.tel",
+			B.hall_seat_number					as "hall.seatNumber",
+			C.concert_no                        as "concert.no",
+		    C.concert_title                     as "concert.title",
+		    C.concert_artist                    as "concert.artist",
+		    C.concert_agency                    as "concert.agency",
+		    C.concert_genre                     as "concert.genre",
+		    C.concert_cover_img                 as "concert.coverImg",
+		    C.concert_content                   as "concert.content",
+		    C.concert_content_img               as "concert.contentImg",
+		    C.concert_available                 as "concert.available",
+		    C.concert_ticket_open_date          as "concert.ticketOpenDate",
+		    C.concert_ticket_close_date         as "concert.ticketCloseDate",
+		    C.concert_price                     as "concert.price",
+		    C.concert_open_date                 as "concert.openDate",
+		    C.concert_close_date                as "concert.closeDate",
+		    C.concert_create_date               as "concert.createDate",
+		    C.concert_likes                     as "concert.likes",
+		    C.cate_no                           as "concert.cateNo"
+		from
+			performances A, halls B, concerts C
+		where
+			A.hall_no = B.hall_no
+		and
+			A.concert_no = C.concert_no
+		and
+			C.concert_available = 'Y'
+		and
+			C.cate_no = 1
+		order by
+			C.concert_create_date desc
+	</select>
+
+	<select id="getPerformanceByPerformanceDay" parameterType="map" resultType="Performance">
+		select
+			A.performance_no		as no,
+			A.performance_day		as day,
+			A.performance_time		as time,
+			B.hall_no				as "hall.no",
+			B.hall_name				as "hall.name",
+			B.hall_address			as "hall.address",
+			B.hall_tel				as "hall.tel",
+			B.hall_seat_number		as "hall.seatNumber",
+			C.concert_no			as "concert.no",
+			C.concert_price			as "concert.price",
+			C.concert_title			as "concert.title"
+		from
+			 performances A, halls B, concerts C
+		where
+			A.hall_no = B.hall_no
+			and A.concert_no = C.concert_no
+			and C.concert_available = 'Y'
+			and to_char(performance_day, 'yyyy-mm-dd') = #{performanceDay}
+			--and A.performance_time > to_char(sysdate, 'hh24:mi')
+			and A.concert_no = #{concertNo}
+	</select>
+	
+	<update id="updatePerformance" parameterType="Performance">
+		update 
+			performances
+		set
+			performance_day = #{day},
+			performance_time = #{time},
+			hall_no = #{hall.no},
+			performance_restseatcount = #{restSeatCount}
+			
+		where 
+			performance_no = #{no}
+	</update>
+	
+	<insert id="addPerformance" parameterType="Performance">
+		insert into performances
+			(performance_no, performance_day, performance_time, hall_no, concert_no, performance_restseatcount)
+		values
+			(performance_seq.nextval, #{day}, #{time}, #{hall.no}, #{concert.no}, #{restSeatCount})
+	</insert>
+	
+	<select id="gethallByconcertNo" parameterType="int" resultType="Performance">
+		select 
+			A.performance_no					as no,
+			A.performance_day					as day,
+			A.performance_time					as time,
+			A.performance_restSeatCount			as restSeatCount,
+			B.hall_no							as "hall.no",
+			B.hall_name							as "hall.name",
+			B.hall_address						as "hall.address",
+			B.hall_tel							as "hall.tel",
+			B.hall_seat_number					as "hall.seatNumber",
+			C.concert_no                        as "concert.no",
+		    C.concert_title                     as "concert.title",
+		    C.concert_artist                    as "concert.artist",
+		    C.concert_agency                    as "concert.agency",
+		    C.concert_genre                     as "concert.genre",
+		    C.concert_cover_img                 as "concert.coverImg",
+		    C.concert_content                   as "concert.content",
+		    C.concert_content_img               as "concert.contentImg",
+		    C.concert_available                 as "concert.available",
+		    C.concert_ticket_open_date          as "concert.ticketOpenDate",
+		    C.concert_ticket_close_date         as "concert.ticketCloseDate",
+		    C.concert_price                     as "concert.price",
+		    C.concert_open_date                 as "concert.openDate",
+		    C.concert_close_date                as "concert.closeDate",
+		    C.concert_create_date               as "concert.createDate",
+		    C.concert_likes                     as "concert.likes",
+		    C.cate_no                           as "concert.cateNo"
+		from
+			performances A, halls B, concerts C
+		where
+			A.hall_no = B.hall_no
+		and
+			A.concert_no = C.concert_no
+		and
+			C.concert_available = 'Y'
+		and
+			C.cate_no = 2
+		and
+			C.concert_no = #{value}
+		order by
+			A.performance_no
+	</select>
+	
+</mapper>   
+
+
+

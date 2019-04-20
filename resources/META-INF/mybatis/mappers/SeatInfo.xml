@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.SeatInfoDao">
+	<select id="getSeatInfoByPerformanceNo" parameterType="int" resultType="SeatInfo">
+		select
+			A.seat_info_no					as no,
+			B.hall_no						as "hall.no",
+			A.seat_name						as seatName,
+			A.seat_line						as "line",
+			B.performance_no				as "performance.no",
+			B.performance_day				as "performance.day",
+			B.performance_time				as "performance.time",
+			B.performance_restSeatCount		as "performance.restSeatCount",
+			C.concert_no					as "concert.no",
+			C.concert_price					as "concert.price",
+			C.concert_title					as "concert.title",
+			C.concert_artist				as "concert.artist",
+			concert_open_date				as openDate,
+			concert_close_date				as closeDate,
+			concert_cover_img				as coverImg
+		from
+			seat_info A, performances B, concerts C
+		where
+			A.hall_no = B.hall_no
+			and B.concert_no = C.concert_no
+			and C.concert_available = 'Y'
+			and B.performance_no = #{value}	
+		order by
+			A.seat_name asc				
+						
+		
+	</select>
+	
+</mapper>   
+
+
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.QuestionDao">
+	
+	
+	<select id="getQuestions" parameterType="map" resultType="Question" >
+		select
+			a.question_no		as no,
+			a.question_comment	as	comments,
+			a.question_create_date	as createDate,
+			a.user_no			as	"user.no",
+			a.concert_no		as	"concert.no"
+		from 
+			questions a, users b, concerts c
+        where a.user_no	= b.user_no
+		and a.concert_no = c.concert_no
+		and a.concert_no = #{concertNo}
+		and a.user_no = #{userNo}
+        order by a.question_create_date desc;
+	</select>
+		
+	
+	
+	
+	
+</mapper>   
+
+
+

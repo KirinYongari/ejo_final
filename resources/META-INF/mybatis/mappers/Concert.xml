@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.ConcertDao">
+
+	<!-- 콘서트 카운트 획득 -->
+	<select id="getConcertCount" resultType="int">
+		select
+			count(*)
+		from
+			concerts
+		where
+			cate_no = 1
+		and
+			concert_available = 'Y'
+	</select>
+
+	<!-- 분류 항목에 따라 공연정보 가져오기 -->
+	<select id="getSortConcerts" parameterType="Criteria" resultType="Concert">
+		select *
+		from (
+				select
+				<choose>
+					<when test="sortby == 'date'">
+						row_number() over(order by concert_open_date asc) rn,
+					</when>
+					<when test="sortby == 'new'">
+						row_number() over(order by concert_create_date desc) rn,
+					</when>
+					<otherwise>
+						row_number() over(order by concert_likes desc) rn,
+					</otherwise>
+				</choose>
+				    concert_no                          as no,
+				    concert_title                       as title,
+				    concert_artist                      as artist,
+				    concert_agency                      as agency,
+				    concert_genre                       as genre,
+				    concert_cover_img                   as coverImg,
+				    concert_content                     as content,
+				    concert_content_img                 as contentImg,
+				    concert_available                   as available,
+				    concert_ticket_open_date            as ticketOpenDate,
+				    concert_ticket_close_date           as ticketCloseDate,
+				    concert_price                       as price,
+				    concert_open_date                   as openDate,
+				    concert_close_date                  as closeDate,
+				    concert_create_date                 as createDate,
+				    concert_likes                       as likes,
+				    cate_no                             as "category.no"
+				from
+					concerts
+				where
+					concert_available = 'Y'
+				and
+					cate_no = 1
+				<choose>
+					<when test="opt == 'idol'">
+						and
+							concert_genre = '아이돌'
+					</when>
+					<when test="opt == 'fan'">
+						and
+							concert_genre like '%' || '팬미팅' || '%' or concert_genre like '%' || '팬클럽' || '%'
+					</when>
+					<when test="opt == 'bal'">
+						and
+							concert_genre like '%' || '발라드' || '%' or upper(concert_genre) like '%' || upper('R&amp;B') || '%'
+					</when>
+					<when test="opt == 'hip_edm'">
+						and
+							concert_genre like '%' || '힙합' || '%' or upper(concert_genre) like '%' || upper('EDM') || '%'
+					</when>
+					<when test="opt == 'ind_roc'">
+						and
+							concert_genre like '%' || '인디' || '%' or concert_genre like '%' || '록' || '%'
+					</when>
+					<when test="opt == 'visit_kr'">
+						and
+							concert_genre = '내한'
+					</when>
+					<when test="opt == 'other'">
+						and
+							not concert_genre like '%' || '아이돌' || '%'
+						and
+							not concert_genre like '%' || '팬미팅' || '%'
+						and
+							not concert_genre like '%' || '팬클럽' || '%'
+						and
+							not concert_genre like '%' || '발라드' || '%'
+						and
+							not upper(concert_genre) like '%' || upper('발라드/R&amp;B') || '%'
+						and
+							not upper(concert_genre) like '%' || upper('R&amp;B') || '%'
+						and
+							not upper(concert_genre) like '%' || upper('힙합/EDM') || '%'
+						and
+							not concert_genre like '%' || '힙합' || '%'
+						and
+							not upper(concert_genre) like '%' || upper('EDM') || '%'
+						and
+							not concert_genre like '%' || '록' || '%'
+						and
+							not concert_genre like '%' || '인디' || '%'
+						and
+							not concert_genre like '%' || '내한' || '%'
+					</when>
+					<otherwise>
+						and
+							concert_genre is not null
+					</otherwise>
+				</choose>
+				)
+	</select>
+
+	<!-- 콘서트 번호에 맞는 콘서트 가져오기 -->
+	<select id="getConcertByNo" parameterType="int" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			cate_no = 1
+		and
+			concert_no = #{value}
+	</select>
+	
+	<select id="getConcertByNoForAdmin" parameterType="int" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			concert_no = #{value}
+	</select>
+
+	<!-- 최신순으로 모든 콘서트 획득 -->
+	<select id="getConcerts" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			cate_no = 1
+		and
+			concert_available = 'Y'
+		order
+			by concert_create_date desc
+	</select>
+	
+	<!-- 최신 5개의 콘서트를 획득 -->
+	<select id="getNewConcerts" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			cate_no = 1
+		and
+			concert_available = 'Y'
+		and
+			rownum &lt;= 5
+		order by
+			concert_create_date desc
+	</select>
+	
+	<!-- 최신 연극 5개 획득 -->
+	<select id="getNewFiveActing" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			cate_no = 2
+		and
+			concert_available = 'Y'
+		and
+			rownum &lt;= 5
+		order by
+			concert_create_date desc
+	</select>
+	
+	<!-- 인기 연극 5개 획득 -->
+	<select id="getPopularFiveActing" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			cate_no = 2
+		and
+			concert_available = 'Y'
+		and
+			rownum &lt;= 5
+		order by
+			concert_likes desc
+	</select>
+	
+	<!-- 인기순 4개의 콘서트를 획득 -->
+	<select id="getLikeConcerts" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			cate_no = 1
+		and
+			concert_available = 'Y'
+		and
+			rownum &lt;= 4
+		order by
+			concert_likes desc
+	</select>
+	
+	<select id="getLikeFiveConcerts" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			cate_no = 1
+		and
+			concert_available = 'Y'
+		and
+			rownum &lt;= 5
+		order by
+			concert_likes desc
+	</select>
+	
+	<select id="getConcertsByCriteria" parameterType="Criteria" resultType="Concert">
+		select
+			concert_no							as no,
+			concert_title						as title,
+			concert_artist						as artist,
+			concert_agency						as agency,
+			concert_genre						as genre,
+			concert_cover_img					as coverImg,
+			concert_content						as content,
+			concert_content_img					as contentImg,
+			concert_available					as available,
+			concert_ticket_open_date			as ticketOpenDate,
+			concert_ticket_close_date			as ticketCloseDate,
+			concert_price						as price,
+			concert_open_date					as openDate,
+			concert_close_date					as closeDate,
+			concert_create_date					as createDate,
+			concert_likes						as likes,
+			cate_no								as "category.no"
+		from (select
+				A.*,
+				row_number() over (order by concert_no desc) rn
+			from
+				concerts A
+			<where>
+				<if test="opt != null">
+					<choose>
+						<when test="opt == 'title'">
+							concert_title like '%' || #{keyword} || '%'
+						</when>
+						<when test="opt == 'artist'">
+							concert_artist = #{keyword}
+						</when>
+						<when test="opt == 'genre'">
+							concert_genre = #{keyword}
+						</when>
+					</choose>
+				</if>
+			</where>)
+		where
+			rn >= #{beginIndex} and rn &lt;= #{endIndex}
+	</select>
+	
+	<select id="getTotalConcertRows" parameterType="Criteria" resultType="int">
+		select
+			count(*)
+		from
+			concerts
+		<where>
+			<if test="opt != null">
+				<choose>
+					<when test="opt == 'title'">
+						concert_title like '%' || #{keyword} || '%'
+					</when>
+					<when test="opt == 'artist'">
+						concert_artist = #{keyword}
+					</when>
+					<when test="opt == 'genre'">
+						concert_genre = #{keyword}
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
+	
+	<!-- 공연 랭킹 불러오기 -->
+	<select id="getRank" parameterType="Criteria" resultType="hashmap">
+		select
+			rownum as rank,
+			no,
+			title,
+			coverImg,
+			artist,
+			cateNo,
+			openDate,
+			closeDate,
+			rate
+		from
+			(select 
+				A.concert_no								as no,
+				A.concert_title								as title,
+				A.concert_cover_img							as coverImg,
+				A.concert_artist							as artist,
+				A.cate_no									as cateNo,
+				to_char(A.concert_open_date, 'yyyy.MM.dd')	as openDate,
+				to_char(A.concert_close_date, 'yyyy.MM.dd')	as closeDate,
+				trunc(B.rate, 1)							as rate
+			from concerts A, (select
+									B.concert_no,
+									<choose>
+										<when test="opt == 'con'">
+											(select count(*) from tickets X, performances Y, concerts Z where X.performance_no = Y.performance_no and Y.concert_no = B.concert_no and Y.concert_no = Z.concert_no and Z.cate_no = 1) * 100 / 
+											(select count(*) from tickets X, performances Y, concerts Z where X.performance_no = Y.performance_no and Y.concert_no = Z.concert_no and Z.cate_no = 1) rate
+										</when>
+										<when test="opt == 'art'">
+											(select count(*) from tickets X, performances Y, concerts Z where X.performance_no = Y.performance_no and Y.concert_no = B.concert_no and Y.concert_no = Z.concert_no and Z.cate_no = 2) * 100 / 
+											(select count(*) from tickets X, performances Y, concerts Z where X.performance_no = Y.performance_no and Y.concert_no = Z.concert_no and Z.cate_no = 2) rate
+										</when>
+										<otherwise>
+											(select count(*) from tickets X, performances Y where X.performance_no = Y.performance_no and Y.concert_no = B.concert_no) * 100 / (select count(*) from tickets X) rate
+										</otherwise>
+									</choose>
+								from
+									tickets A, performances B, concerts C
+								where 
+									A.performance_no = B.performance_no
+								and
+									B.concert_no = C.concert_no
+								<choose>
+									<when test="sortby == 'weekly'">
+										and to_char(A.ticket_create_date) between to_char(sysdate-7) and to_char(sysdate)
+									</when>
+									<when test="sortby == 'monthly'">
+										and to_char(A.ticket_create_date) between to_char(sysdate-30) and to_char(sysdate)
+									</when>
+								</choose>
+								group by
+									B.concert_no) B
+			where
+				A.concert_no = B.concert_no 
+			and
+				A.concert_available = 'Y'
+			<choose>
+				<when test="opt == 'con'">
+					and A.cate_no = 1
+				</when>
+				<when test="opt == 'art'">
+					and A.cate_no = 2
+				</when>
+				<otherwise>
+					and A.cate_no is not null
+				</otherwise>
+			</choose>
+			and
+				rownum &lt;=10
+			order by
+				rate desc)
+	</select>
+	
+	<select id="getCountExpect" parameterType="int" resultType="int">
+	     select count(*)
+	     from
+	     	expects
+	     where 
+	     	concert_no = #{value}
+	 </select>
+	  <select id="getCountReview" parameterType="int" resultType="int">
+	     select count(*)
+	     from
+	     	reviews
+	     where 
+	     	concert_no = #{value}
+	 </select>
+	  <select id="getCountQuestion" parameterType="int" resultType="int">
+	     select count(*)
+	     from
+	     	questions
+	     where 
+	     	concert_no = #{value}
+	 </select>
+	 
+	 
+	 <select id="getExpects" parameterType="int" resultType="expect">
+	      select 
+	     	a.expect_no as no,
+	     	a.expect_comment as comments,
+	     	a.expect_create_date as createDate,
+	     	b.user_no		as	"user.no",
+	     	b.user_name	as	"user.name",
+	     	b.user_nickname as	"user.nickname",
+	     	b.theme_no	as	"user.themeNo",
+	     	c.concert_no	as "concert.no"
+	     	
+	     from
+	     	expects a, users b, concerts c
+	     where 
+	     	a.user_no = b.user_no
+	     	and a.concert_no = c.concert_no
+	     	
+	     	and a.concert_no = #{concertNo}
+	     order by a.expect_create_date desc
+	     
+	     
+	 </select>
+	 
+	 <select id="getReviews" parameterType="int" resultType="review">
+	      select 
+	     	a.review_no as no,
+	     	a.review_comment as comments,
+	     	a.review_create_date as createDate,
+	     	b.user_no		as	"user.no",
+	     	b.user_name	as	"user.name",
+	     	b.user_nickname as	"user.nickname",
+	     	b.theme_no	as	"user.themeNo",
+	     	c.concert_no	as "concert.no"
+	     	
+	     from
+	     	reviews a, users b, concerts c
+	     where 
+	     	a.user_no = b.user_no
+	     	and a.concert_no = c.concert_no
+	     
+	     	and a.concert_no = #{concertNo}
+	     order by a.review_create_date desc
+	     
+	     
+	 </select>
+	 
+	  <select id="getQuestions" parameterType="int" resultType="question">
+	      select 
+	     	a.question_no as no,
+	     	a.question_comment as comments,
+	     	a.question_create_date as createDate,
+	     	b.user_no		as	"user.no",
+	     	b.user_name	as	"user.name",
+	     	b.user_nickname as	"user.nickname",
+	     	b.theme_no	as	"user.themeNo",
+	     	c.concert_no	as "concert.no"
+	     	
+	     from
+	     	questions a, users b, concerts c
+	     where 
+	     	a.user_no = b.user_no
+	     	and a.concert_no = c.concert_no
+	     	
+	     	and a.concert_no = #{concertNo}
+	     order by a.question_create_date desc
+	     
+	     
+	 </select>
+	
+	<insert id="addExpect" parameterType="expect">
+		insert into expects
+			(expect_no,expect_comment, expect_create_date, user_no, concert_no)
+		values
+			(expect_seq.nextval,#{comments},sysdate,#{user.no},#{concert.no})
+	</insert>
+	
+	<insert id="addReview" parameterType="review">
+		insert into reviews
+			(review_no,review_comment, review_create_date, user_no, concert_no)
+		values
+			(review_seq.nextval,#{comments},sysdate,#{user.no},#{concert.no})
+	</insert>
+	
+	<insert id="addQuestion" parameterType="question">
+		insert into questions
+			(question_no,question_comment, question_create_date, user_no, concert_no)
+		values
+			(question_seq.nextval,#{comments},sysdate,#{user.no},#{concert.no})
+	</insert>
+	
+	<!-- 공연시간 -->
+	<select id="getPerformanceTiemByConcertNo" parameterType="int" resultType="Performance">
+		select DISTINCT
+		
+			A.performance_day		as day,
+			A.performance_time		as time
+			
+			
+		from
+			 performances A, halls B, concerts C
+		where
+			A.hall_no = B.hall_no
+			and A.concert_no = C.concert_no
+			and C.concert_no = #{value}
+	</select>
+	
+	<insert id="addConcert" parameterType="Concert">
+		insert into concerts
+		(concert_no, concert_title, concert_artist, concert_agency, concert_genre, concert_cover_img, concert_content, concert_content_img, concert_available, 
+		concert_ticket_open_date, concert_ticket_close_date, concert_price, concert_open_date, concert_close_date, concert_create_date, concert_likes, cate_no)
+		values
+		(concert_seq.nextval, #{title}, #{artist}, #{agency}, #{genre}, #{coverImg}, #{content}, #{contentImg}, 'Y', #{ticketOpenDate}, #{ticketCloseDate}, 
+		#{price}, #{openDate}, #{closeDate}, sysdate, 0, #{category.no})
+	</insert>
+	
+	<update id="updateConcert">
+		update concerts
+		set
+			concert_title = #{title},
+			concert_artist = #{artist},
+			concert_agency = #{agency},
+			concert_genre = #{genre},
+			concert_cover_img = #{coverImg},
+			concert_content = #{content},
+			concert_content_img = #{contentImg},
+			concert_available = #{available},
+			concert_ticket_open_date = #{ticketOpenDate},
+			concert_ticket_close_date = #{ticketCloseDate},
+			concert_price = #{price},
+			concert_open_date = #{openDate},
+			concert_close_date = #{closeDate},
+			concert_likes = #{likes},
+			cate_no = #{category.no}
+		where
+			concert_no = #{no}
+	</update>
+	
+</mapper>

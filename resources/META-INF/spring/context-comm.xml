@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	 <!-- 
+    	애노테이션 설정 정보를 감지하고, 필요한 작업을 수행할 때 사용되는 객체를 스프링의 빈으로 등록하게 한다.
+     -->
+	
+	<context:annotation-config></context:annotation-config>
+ 	<context:component-scan base-package="kr.co.jhta.service" />
+	
+</beans>

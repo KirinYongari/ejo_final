@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.TicketDao">
+
+	<select id="countTicketByPerformanceNo" parameterType="int" resultType="int">
+		select
+			count(ticket_no)
+		from
+			tickets
+		where
+			performance_no = #{performanceNo}
+	</select>
+	<select id="reservedTicketByPerformanceNo" parameterType="int" resultType="Ticket">
+		select
+			ticket_no					as no,
+			ticket_price				as price,
+			ticket_create_date			as createDate,
+			performance_no				as "performance.no",
+			user_no						as "user.no",
+			seat_info_no				as "seatInfo.no",
+			discount_event_no			as "discountEvent.no"
+		from
+			tickets
+		where
+			performance_no = #{performanceNo}
+	</select>
+	<select id="discountEventInfo" resultType="DiscountEvent">
+		select
+			discount_event_no			as no,
+			discount_event_title		as title,
+			discount_event_content		as content
+		from
+			discount_events
+	
+	</select>
+
+	<insert id="createTickets" parameterType="Ticket">
+		insert into tickets
+		(ticket_no, ticket_price, performance_no, user_no, seat_info_no, discount_event_no, ticket_totalPrice, ticket_cardApprovalNo, ticket_merchantId, ticket_properId, ticket_create_date)
+		values
+		(ticket_seq.nextval, #{price}, #{performance.no}, #{user.no}, #{seatInfo.no}, #{discountEvent.no}, #{totalPrice}, #{cardApprovalNo}, #{merchantId}, #{properId}, sysdate)
+	</insert>
+	
+	<!-- 마이페이지에서 예매내용 뿌려주기(태용) -->
+	<select id="reservedTicketByUserNo" parameterType="int" resultType="Ticket">
+		select
+			a.ticket_no					as no,
+			a.ticket_price				as price,
+			a.ticket_create_date		as createDate,
+			a.performance_no			as "performance.no",
+			a.user_no					as "user.no",
+			a.seat_info_no				as "seatInfo.no",
+			a.discount_event_no			as "discountEvent.no",
+			b.performance_day			as "performance.day",
+			b.performance_time			as "performance.time",
+			c.concert_no				as "concert.no",
+			c.concert_title				as "concert.title",
+			d.SEAT_NAME					as "seatInfo.seatName",
+			e.user_name					as "user.name"
+		from
+			tickets a, performances b, concerts c, SEAT_INFO d , users e
+		where
+			a.performance_no = b.performance_no
+		and b.concert_no = c.concert_no
+		and a.SEAT_INFO_NO = d.seat_info_no
+		and a.user_no = e.user_no
+		and a.user_no = #{userNo}
+	</select>
+	
+	<!-- 페이징처리할 티켓 카운트하기 (태용) -->
+	<select id="getTotalTicketRows" parameterType="Criteria" resultType="int">
+		select
+			count(*)
+		from
+			tickets
+		order by
+			ticket_create_date desc
+	</select>
+	
+	<!-- 페이징처리, rn으로 순서 부여 정렬 (태용) -->
+	<select id="getTicketsByCriteria" parameterType="Criteria" resultType="Ticket">
+		select
+			*
+		from 
+			(select 
+				a.ticket_no					as no,
+				a.ticket_price				as price,
+				a.ticket_create_date		as createDate,
+				a.performance_no			as "performance.no",
+				a.user_no					as "user.no",
+				a.seat_info_no				as "seatInfo.no",
+				a.discount_event_no			as "discountEvent.no",
+				b.performance_day			as "performance.day",
+				b.performance_time			as "performance.time",
+				c.concert_no				as "concert.no",
+				c.concert_title				as "concert.title",
+				d.SEAT_NAME					as "seatInfo.seatName",
+				e.user_name					as "user.name", 
+				row_number() over (order by a.ticket_create_date desc) rn
+			from
+				tickets a, performances b, concerts c, seat_info d , users e
+			where 
+				a.performance_no = b.performance_no
+			and b.concert_no = c.concert_no
+			and a.SEAT_INFO_NO = d.seat_info_no
+			and a.user_no = e.user_no
+			and a.user_no = #{no})
+		where
+			rn >= #{beginIndex} 
+		and rn &lt;= #{endIndex}
+		
+	</select>
+	<select id="getConcertAndArtByNo" parameterType="int" resultType="Concert">
+		select
+		    concert_no                          as no,
+		    concert_title                       as title,
+		    concert_artist                      as artist,
+		    concert_agency                      as agency,
+		    concert_genre                       as genre,
+		    concert_cover_img                   as coverImg,
+		    concert_content                     as content,
+		    concert_content_img                 as contentImg,
+		    concert_available                   as available,
+		    concert_ticket_open_date            as ticketOpenDate,
+		    concert_ticket_close_date           as ticketCloseDate,
+		    concert_price                       as price,
+		    concert_open_date                   as openDate,
+		    concert_close_date                  as closeDate,
+		    concert_create_date                 as createDate,
+		    concert_likes                       as likes,
+		    cate_no                             as "category.no"
+		from
+			concerts
+		where
+			concert_no = #{value}
+	</select>
+	
+	
+</mapper>   
+
+
+

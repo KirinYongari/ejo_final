@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="kr.co.jhta.dao.SearchDao">
+	
+	<!-- 검색해서 콘서트 찾기 -->
+	<select id="getConcertBySearch" parameterType="string" resultType="Concert">
+		select
+			concert_no					as no,
+			concert_title				as title,
+			concert_artist				as artist,
+			concert_agency				as agency,
+			concert_cover_img			as coverImg,
+			concert_content				as content,
+			concert_content_img		as contentImg,
+			concert_available			as available,
+			concert_ticket_open_date	as ticketOpenDate,
+			concert_ticket_close_date	as ticketCloseDate,
+			concert_open_date			as openDate,
+			concert_close_date			as closeDate,
+			concert_price				as price,
+			concert_create_date			as createDate,
+			concert_likes				as likes,
+			cate_no						as "category.no"
+		from
+			concerts
+		where
+			(upper(concert_title) like '%' || upper(#{keyword}) || '%' 
+		or	upper(concert_artist) like '%' || upper(#{keyword}) || '%')
+	</select>
+	
+	<!-- 검색해서 앨범 찾기 -->
+	<select id="getAlbumBySearch" parameterType="string" resultType="Album">
+		select
+			album_no			as no,
+			album_title			as title,
+			album_artist		as artist,
+			album_cover_img		as coverImg,
+			album_year			as year,	
+			album_likes			as likes,
+			album_genre			as genre,
+			album_create_date	as createDate
+		from
+			albums
+		where
+			(upper(album_title) like '%' || upper(#{keyword}) || '%' 
+		or	upper(album_artist) like '%' || upper(#{keyword}) || '%')		
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>   

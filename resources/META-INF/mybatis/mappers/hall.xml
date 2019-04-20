@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.HallDao">
+	
+	<select id="getHallByConcertNo" parameterType="int" resultType="Hall">
+		select distinct
+			a.hall_no			as	no,
+			a.hall_name			as	name,
+			a.hall_address		as	address,
+			a.hall_tel			as	tel,
+			a.hall_seat_number	as	seatNumber
+		from
+			halls a, performances b
+		where 
+			a.hall_no = b.hall_no
+			and b.concert_no = #{value}
+	</select>
+	
+	<select id="getHalls" resultType="Hall">
+		select
+			hall_no				as	no,
+			hall_name			as	name,
+			hall_address		as	address,
+			hall_tel			as	tel,
+			hall_seat_number	as	seatNumber
+		from
+			halls
+	</select>
+	
+	<select id="getHallByHallNo" parameterType="int" resultType="Hall">
+		select
+			hall_no				as	no,
+			hall_name			as	name,
+			hall_address		as	address,
+			hall_tel			as	tel,
+			hall_seat_number	as	seatNumber
+		from
+			halls
+		where
+			hall_no = #{value}
+	</select>
+	
+</mapper>   
+
+
+

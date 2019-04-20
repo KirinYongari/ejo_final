@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.ForUDao">
+
+	<select id="getConcertPlanner" parameterType="int" resultType="LikesPlanner">
+	    select 
+		    a.like_planner_no as no,
+		    a.like_planner_create_date as createDate,
+		    b.user_no             as  "user.no",
+		    b.user_name             as  "user.name",
+		    b.user_nickname         as "user.nickname",
+		    c.concert_no          as  "concert.no",
+		    c.concert_title          as  "concert.title",
+			c.concert_artist         as  "concert.artist",
+			c.concert_agency           as  "concert.agency",
+			c.concert_genre            as "concert.genre",
+			c.concert_cover_img       as "concert.coverImg",
+			c.concert_content          as  "concert.content",
+			c.concert_content_img      as  "concert.contentImg",
+			c.concert_available         as "concert.available",
+			c.concert_ticket_open_date    as "concert.ticketOpenDate",
+			c.concert_ticket_close_date   as "concert.ticketCloseDate",
+			c.concert_price               as "concert.price",
+			c.concert_open_date          as "concert.openDate",
+			c.concert_close_date        as "concert.closeDate",
+			c.concert_create_date        as "concert.createDate",
+			c.concert_likes              as "concert.likes",
+			c.cate_no                    as "concert.category.no"
+		from
+		    likes_planner a, users b, concerts c
+		where
+		    a.user_no = b.user_no
+		    and a.concert_no = c.concert_no
+		    and b.USER_AVAILABLE = 'Y'
+		    and c.CONCERT_AVAILABLE = 'Y'
+		    and b.user_no = #{value}
+		order by c.CONCERT_TICKET_OPEN_DATE asc
+	</select>
+	
+	<insert id="addPlanner" parameterType="LikesPlanner">
+		insert into likes_planner
+			(like_planner_no,like_planner_create_date, user_no, concert_no)
+		values
+			(likePlanner_seq.nextval, sysdate, #{user.no} , #{concert.no} )
+	</insert>
+	
+	<delete id="deletePlanner" parameterType="map">
+		delete
+		from 
+			likes_planner
+		where 
+			user_no = #{userNo}
+		and
+			concert_no = #{concertNo}
+	
+	</delete>
+	           
+	<select id="getLikePlannerByuserNoandConcertNo" parameterType="map" resultType="LikesPlanner">
+		select
+			like_planner_no as no,
+			like_planner_create_date as createDate, 
+			user_no as "user.no", 
+			concert_no as "concert.no"
+		from
+			likes_planner
+		where
+			user_no = #{userNo}
+			and concert_no = #{concertNo}
+	
+	</select>	
+	
+	<select id = "sessionPlanners" parameterType="map" resultType="LikesPlanner">
+		 select 
+		    a.like_planner_no as no,
+		    a.like_planner_create_date as createDate,
+		    b.user_no             as  "user.no",
+		    b.user_name             as  "user.name",
+		    b.user_nickname         as "user.nickname",
+		    c.concert_no          as  "concert.no",
+		    c.concert_title          as  "concert.title",
+			c.concert_artist         as  "concert.artist",
+			c.concert_agency           as  "concert.agency",
+			c.concert_genre            as "concert.genre",
+			c.concert_cover_img       as "concert.coverImg",
+			c.concert_content          as  "concert.content",
+			c.concert_content_img      as  "concert.contentImg",
+			c.concert_available         as "concert.available",
+			c.concert_ticket_open_date    as "concert.ticketOpenDate",
+			c.concert_ticket_close_date   as "concert.ticketCloseDate",
+			c.concert_price               as "concert.price",
+			c.concert_open_date          as "concert.openDate",
+			c.concert_close_date        as "concert.closeDate",
+			c.concert_create_date        as "concert.createDate",
+			c.concert_likes              as "concert.likes",
+			c.cate_no                    as "concert.category.no"
+		from
+		    likes_planner a, users b, concerts c
+		where
+		    a.user_no = b.user_no
+		    and a.concert_no = c.concert_no
+		    and b.USER_AVAILABLE = 'Y'
+		    and c.CONCERT_AVAILABLE = 'Y'
+		   	and a.user_no = #{userNo}
+		   	<if test="concertsNo != null ">
+		   		and a.concert_no not in (
+		   		<foreach index="index" item="concertNo" collection="concertsNo" separator=",">
+		   			#{concertNo}
+		   		</foreach>
+		   		)
+		   	</if>
+		    
+	
+	</select>
+	
+	<select id = "plannerByUserNo" parameterType="int" resultType="LikesPlanner">
+		select
+			like_planner_no as no,
+			like_planner_create_date as createDate, 
+			user_no as "user.no", 
+			concert_no as "concert.no"
+		from
+			likes_planner
+		where
+			user_no = #{userNo}
+	</select>
+</mapper>   
+
+
+

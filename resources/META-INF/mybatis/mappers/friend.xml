@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.FriendDao">
+	
+	<!-- 친구수 카운트 -->
+	<select id="getCountFriend" parameterType="int" resultType="int">
+		select 
+			count(*)
+		from 
+			friends
+		where 
+			user_no = #{value}
+	</select>
+	
+	<!-- 친구목록 가져오기 -->
+	<select id="getListFriend" parameterType="int" resultType="friend">
+		select 
+			a.friend_no			as no,
+			a.user_no			as "user.no",
+			a.friend_user_no	as "friendUser.no",
+			b.user_nickname		as "user.nickname",
+			c.theme_img			as "user.theme.img",
+			(select 'Y'
+			from friends x
+			where x.user_no = a.friend_user_no) as same
+		from 
+			friends a, users b, theme c
+		where 
+			a.friend_user_no = b.user_no
+		and b.theme_no = c.theme_no
+		and	a.user_no = #{value}	
+	</select>
+	
+	<!-- 팔로우하기 -->
+	<insert id="followFriend" parameterType="friend">
+		insert into
+			friends(friend_no, user_no, friend_user_no)
+		values
+			(friend_seq.nextval, #{user.no}, #{friendUser.no})
+	</insert>
+
+	<!-- 언팔하기 -->
+	<delete id="unfollowFriend" parameterType="friend">
+		delete from
+			friends
+		where
+			user_no = #{user.no}
+		and	friend_user_no = #{friendUser.no}
+	</delete>
+	
+</mapper>   
+
+
+

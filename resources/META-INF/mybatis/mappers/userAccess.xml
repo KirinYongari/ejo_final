@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.UserAccessDao">
+
+	<select id="getLastAccessByUserNo" parameterType="int" resultType="UserAccess">
+		select 
+			user_access_no			as no,
+			user_no					as userNo,
+			user_access_date		as accessDate
+		from (select
+				A.*,
+				row_number() over (order by user_access_no desc) rn
+				from
+					users_access A
+				where
+					user_no = #{value}
+		)
+		where
+			rn = 1
+	</select>
+	
+	<select id="getUserAccessByUserNo" parameterType="int" resultType="UserAccess">
+		select 
+			user_access_no			as no,
+			user_no					as userNo,
+			user_access_date		as accessDate
+		from
+			users_access
+		where
+			user_no = #{value}
+		order by user_access_no desc
+	</select>
+	
+	<insert id="addUserAccess" parameterType="UserAccess">
+		insert into users_access
+		(user_access_no, user_no, user_access_date)
+		values
+		(users_access_seq.nextval, #{userNo}, sysdate)
+	</insert>
+
+</mapper>

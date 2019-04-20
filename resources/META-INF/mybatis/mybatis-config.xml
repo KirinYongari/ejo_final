@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+  <configuration>
+  
+  	<settings>
+  		<!--mybatis의 xml에서 컬럼값에 null값이 잇을시 사용한다.  -->
+  		<setting name="jdbcTypeForNull" value="NULL"/>
+  		<!--mybatis의 xml에서 컬럼값에 null값까지 출력할 수 잇다.  -->
+  		<setting name="callSettersOnNulls" value="true"/>
+  		
+  	</settings>
+  
+  	<typeAliases>
+  		<!--  
+  		<package name="com.sample.concert.vo"/>
+  		만약 , 클래스 이름이 com.sample.concert.vo.Concert라면 concert 로 등록 완료
+  		
+  		-->
+  		<typeAlias alias="Album" type="kr.co.jhta.vo.Album"/>
+  		<typeAlias alias="Pagination" type="kr.co.jhta.vo.Pagination"/>
+  		<typeAlias alias="Criteria" type="kr.co.jhta.vo.Criteria"/>
+  		<typeAlias alias="Category" type="kr.co.jhta.vo.Category"/>
+  		<typeAlias alias="Concert" type="kr.co.jhta.vo.Concert"/>
+  		<typeAlias alias="DiscountEvent" type="kr.co.jhta.vo.DiscountEvent"/>
+  		<typeAlias alias="Expect" type="kr.co.jhta.vo.Expect"/>
+  		<typeAlias alias="Friend" type="kr.co.jhta.vo.Friend"/>
+  		<typeAlias alias="Hall" type="kr.co.jhta.vo.Hall"/>
+  		<typeAlias alias="LikesPlanner" type="kr.co.jhta.vo.LikesPlanner"/>
+  		<typeAlias alias="Music" type="kr.co.jhta.vo.Music"/>
+  		<typeAlias alias="Payment" type="kr.co.jhta.vo.Payment"/>
+  		<typeAlias alias="Performance" type="kr.co.jhta.vo.Performance"/>
+  		<typeAlias alias="Playlist" type="kr.co.jhta.vo.Playlist"/>
+  		<typeAlias alias="PlaylistBoard" type="kr.co.jhta.vo.PlaylistBoard"/>
+  		<typeAlias alias="PlaylistItem" type="kr.co.jhta.vo.PlaylistItem"/>
+  		<typeAlias alias="Question" type="kr.co.jhta.vo.Question"/>
+  		<typeAlias alias="Review" type="kr.co.jhta.vo.Review"/>
+  		<typeAlias alias="SeatInfo" type="kr.co.jhta.vo.SeatInfo"/>
+  		<typeAlias alias="Theme" type="kr.co.jhta.vo.Theme"/>
+  		<typeAlias alias="Ticket" type="kr.co.jhta.vo.Ticket"/>
+  		<typeAlias alias="User" type="kr.co.jhta.vo.User"/>
+  		<typeAlias alias="UserAccess" type="kr.co.jhta.vo.UserAccess"/>
+  		
+  	</typeAliases>
+  
+  	<mappers>
+  		<mapper resource="META-INF/mybatis/mappers/album.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/art.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/Concert.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/forU.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/friend.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/hall.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/music.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/Performance.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/playlistBoard.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/question.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/search.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/SeatInfo.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/theme.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/Ticket.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/user.xml"/>
+  		<mapper resource="META-INF/mybatis/mappers/userAccess.xml"/>
+  		
+  	</mappers>
+  
+  </configuration>
+  

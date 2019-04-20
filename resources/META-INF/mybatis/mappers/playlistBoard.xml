@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.MymusicDao">
+	
+	<!-- 플레이리스트를 랜덤으로 3개를 뽑음 -->
+	<select id="getThreeRandomPlaylist" resultType="playlistBoard">
+		select 
+			*
+		from(
+				select
+					a.playlist_board_no					as "no",
+					a.playlist_board_comment			as "comment",
+					a.playlist_board_create_date		as "createDate",
+					b.user_no							as "user.no",
+					b.user_nickname						as "user.nickname",									
+					c.playlist_no						as "playlist.no",
+					a.playlist_board_likes				as "likes",
+					d.theme_picture						as "theme.picture"
+				from 
+					( select user_nickname,user_no
+					from users A 
+					GROUP by (user_nickname,user_no))x, playlist_boards a, users b, playlists c, theme d
+				where
+					a.user_no = b.user_no
+					and	a.playlist_no = c.playlist_no
+					and b.theme_no	 = d.THEME_NO
+				order by 
+					dbms_random.random)
+		where
+			rownum &lt;= 3
+	</select>
+	
+	<!-- 방명록에 필요한 플레이리스트 뽑아오기 -->
+	<select id="getCommentPlaylist" parameterType="int" resultType="playlistBoard">
+		select
+			a.playlist_board_comment			as "comment",
+			a.playlist_board_no					as "no",
+			a.playlist_board_create_date		as "createDate",
+			b.user_no							as "user.no",
+			b.user_nickname						as "user.nickname",									
+			c.playlist_no						as "playlist.no",
+			a.playlist_board_likes				as "likes",
+			d.theme_img							as "theme.img"
+		from 
+			playlist_boards a, users b, playlists c, theme d
+		where
+				a.user_no = b.user_no
+		and		a.playlist_no = c.playlist_no
+		and 	b.theme_no	 = d.THEME_NO
+		and		c.user_no = ${value}
+		order by a.playlist_board_create_date desc
+	</select>
+	
+	<!-- 방명록에 댓글 세기 -->
+	<select id="getVisitor" parameterType="int" resultType="playlistBoard">
+	    select 
+	    	count(*)
+	    from
+	    	playlist_Boards
+	    where 
+	    	user_no = #{value}
+	    order by
+	    	playlist_board_create_date desc
+	</select>
+	
+	<!-- 방명록에 댓글 달기 -->
+	<insert id="insertComment" parameterType="playlistBoard">
+		insert into 
+			playlist_boards(playlist_board_no, playlist_board_comment, playlist_board_create_date, user_no, playlist_no, playlist_board_likes)
+		values
+			(playlist_board_seq.nextval, #{comment}, sysdate, #{user.no}, #{playlist.no}, #{like})
+	</insert>
+	
+</mapper>   

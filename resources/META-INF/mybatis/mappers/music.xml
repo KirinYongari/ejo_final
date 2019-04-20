@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.dao.MusicDao">
+	
+	<select id="getMusicsForAdmin" parameterType="Criteria" resultType="Music">
+		select
+		 *
+		from
+			(select 
+				row_number() over (order by music_no desc) rn,
+				a.music_no					as no,
+				a.music_title				as title,
+				a.music_artist				as artist,
+				a.music_lyricist			as lyricist,
+				a.music_composer			as composer,
+				a.music_length				as lengths,
+				a.music_year				as years,
+				a.music_create_date			as createDate,
+				a.music_cover_img			as img,
+				a.music_video				as video,
+				a.album_no					as "album.no",
+				a.music_likes				as likes,
+				a.music_filename			as filename,
+	            c.album_title				as "album.title",
+	            c.album_artist				as "album.artist",
+	            c.album_cover_img			as "album.coverImg"
+			from 
+				musics a, albums c
+			<where>
+				a.album_no = c.album_no
+				<if test="opt != null">
+					<choose>
+						<when test="opt == 'all'">
+							and a.music_title like '%' || upper(#{keyword})|| '%'
+							and a.music_no like '%' || upper(#{keyword})|| '%'
+							and c.album_title like '%' || upper(#{keyword})|| '%'
+						</when>
+						<when test="opt == 'title'">
+							a.music_title like '%' || upper(#{keyword})|| '%'
+						</when>
+						<when test="opt == 'artist'">
+							a.music_artist like '%' || upper(#{keyword})|| '%'
+						</when>
+						<when test="opt == 'album'">
+							c.album_title like '%' || upper(#{keyword})|| '%'
+						</when>
+					</choose>
+				</if>
+			</where>)
+		where
+			rn >= #{beginIndex} and rn &lt;= #{endIndex}
+	</select>
+	
+	<select id="getMusics" parameterType="Criteria" resultType="Music">
+		select
+		 *
+		from
+			(select 
+				row_number() over (order by b.cnt asc) rn,
+				a.music_no as	no,
+				a.music_title as title,
+				a.music_artist as artist,
+				a.music_lyricist as lyricist,
+				a.music_composer as composer,
+				a.music_length	as lengths,
+				a.music_year as years,
+				a.music_create_date as createDate,
+				a.music_cover_img	as	img,
+				a.music_video as video,
+				a.album_no	as	"album.no",
+				a.music_likes	as likes,
+				a.music_filename as filename,
+	            b.cnt	as rankCount,
+	            c.album_title	as "album.title",
+	            c.album_artist	as "album.artist",
+	            c.album_cover_img	as "album.coverImg",
+	            (select 'Y'
+                from playlist_items X, playlists Y
+                where X.playlist_no = Y.playlist_no
+                <if test="no != 0">
+                	and Y.user_no =#{no}                    
+                </if>
+                and X.music_no = a.music_no) as added
+				
+			from 
+				musics a, albums c,(
+						select
+	                        music_no as no,
+							count(*) as cnt
+						from
+							music_play_historys
+						where
+							to_char(music_plays_create_date,'yyyy.mm.dd') between to_char(sysdate-31,'yyyy.mm.dd') and to_char(sysdate,'yyyy.mm.dd')
+							
+	                    group by music_no
+				)b
+			where a.music_no = b.no(+)
+			and a.album_no = c.album_no
+			<if test="keyword != null">
+			and a.music_title like '%'||upper(#{keyword})||'%'
+			and a.music_no like '%'||upper(#{keyword})||'%'
+			and c.album_title like '%'||upper(#{keyword})||'%'
+			</if>
+		)
+		where rn >= #{beginIndex}
+		and rn &lt;=#{endIndex}
+	</select>
+	
+	<!-- 모든 음악 카운트 -->
+	<select id="countMusic" parameterType="Criteria" resultType="int">
+		select
+			count(*)
+		from
+			musics a, albums b
+		where
+			a.album_no = b.album_no
+		<if test="keyword != null">
+			and a.music_title like '%'||upper(#{keyword})||'%'
+			and a.music_no like '%'||upper(#{keyword})||'%'
+			and b.album_title like '%'||upper(#{keyword})||'%'
+		</if>
+	</select>
+	
+	<!-- 유저가 담은 노래 카운트 -->
+	<select id="countMusicByUserNo" parameterType="int" resultType="int">
+		select
+			count(*)
+		from
+			playlist_items a, playlists b 
+		where
+ 			a.playlist_no = b.playlist_no 
+		and	b.user_no = #{value}
+	</select>
+	
+	<select id="getMusicByNo" parameterType="int" resultType="Music">
+	   select
+		   	music_no as	no,
+			music_title as title,
+			music_artist as artist,
+			music_lyricist as lyricist,
+			music_composer as composer,
+			music_length	as lengths,
+			music_year as years,
+			music_create_date as createDate,
+			music_cover_img	as	img,
+			music_video as video,
+			album_no	as	"album.no",
+			music_likes	as likes,
+			music_filename as filename
+		from
+			musics
+		where 
+			music_no = #{value}
+	</select>
+	
+	<select id="getMusicByAlbumNo" parameterType="int" resultType="Music">
+	    select
+		   	a.music_no as	no,
+			a.music_title as title,
+			a.music_artist as artist,
+			a.music_lyricist as lyricist,
+			a.music_composer as composer,
+			a.music_length	as lengths,
+			a.music_year as years,
+			a.music_create_date as createDate,
+			a.music_cover_img	as	img,
+			a.music_video as video,
+			a.album_no	as	"album.no",
+			a.music_likes	as likes,
+			a.music_filename as filename
+		from
+			musics a , albums b
+		where 
+			a.album_no = b.album_no	
+		and
+			a.album_no = #{value}
+		order by a.music_year desc
+	</select>
+	
+	
+	
+	<select id="getMusicByAlbumNoAndUserNo" parameterType="map" resultType="Music">
+	    select
+		   	a.music_no as	no,
+			a.music_title as title,
+			a.music_artist as artist,
+			a.music_lyricist as lyricist,
+			a.music_composer as composer,
+			a.music_length	as lengths,
+			a.music_year as years,
+			a.music_create_date as createDate,
+			a.music_cover_img	as	img,
+			a.music_video as video,
+			a.album_no	as	"album.no",
+			a.music_likes	as likes,
+			a.music_filename as filename,
+			(select 'Y'
+                from playlist_items X, playlists Y
+                where X.playlist_no = Y.playlist_no
+                <if test="userNo !=0">
+                and Y.user_no =  #{userNo}                          
+                </if>
+                and X.music_no = a.music_no) as added
+		from
+			musics a , albums b
+		where 
+			a.album_no = b.album_no	
+		and
+			a.album_no = #{albumNo}
+		order by a.music_year desc
+	</select>
+	
+	<update id="updateMusic" parameterType="Music">
+	    update
+	    	musics
+	    set
+	    	music_title = #{title},
+	    	music_artist = #{artist},
+	    	music_lyricist = #{lyricist},
+	    	music_composer = #{composer},
+	    	music_length = #{lengths},
+	    	music_year = #{years},
+	    	music_cover_img = #{img},
+	    	music_video = #{video},
+	    	album_no	= #{album.no},
+	    	music_likes = #{likes}
+	    where
+	    	music_no = #{no}
+	</update>
+	
+	<insert id="addMusicList" parameterType="PlaylistItem">
+		insert into
+			playlist_items
+		(playlist_item_no, playlist_item_turn, playlist_item_create_date, playlist_no, music_no)
+		values
+		(playlistItem_seq.nextval, 1,sysdate, #{playlist.no}, #{music.no})
+	</insert>
+	
+	<delete id="deleteMusicList" parameterType="PlaylistItem">
+		delete from
+			playlist_items
+		where
+			music_no = #{music.no}
+		and 
+			playlist_no = #{playlist.no}
+	</delete>
+	
+	<!-- 유저가 담은 노래 플레이리스트 -->
+	<select id="getPlaylistItemByUserNo" parameterType="int" resultType="PlaylistItem">
+	    select
+	    	a.playlist_item_no 				as no,
+	    	a.playlist_item_turn 			as turn,
+	    	a.playlist_item_create_date 	as createDate,
+	    	a.playlist_no 					as "playlist.no",
+	    	a.music_no 						as "music.no",
+			c.music_title 					as "music.title",
+			c.music_artist 					as "music.artist",
+			c.music_lyricist 				as "music.lyricist",
+			c.music_composer 				as "music.composer",
+			c.music_length					as "music.lengths",
+			c.music_year 					as "music.years",
+			c.music_create_date 			as "music.createDate",
+			c.music_cover_img				as "music.img",
+			c.music_video 					as "music.video",
+			c.album_no						as "music.album.no",
+			c.music_likes					as "music.likes",
+			c.music_filename				as "music.filename",
+			d.album_title 					as "album.title",
+	    	d.album_cover_img 				as "album.coverImg"
+	    from
+	    	playlist_items a, playlists b , musics c, albums d
+	    where
+	    	b.user_no = #{value}
+	    and	
+	    	a.playlist_no = b.playlist_no 
+	    and 
+	    	a.music_no = c.music_no
+	    and 
+	    	c.album_no = d.album_no
+	</select>
+	
+	<select id="getPlaylistByno" parameterType="int" resultType="Playlist">
+		select       
+	        playlist_no	as no,
+	        playlist_title as title,
+	        user_no	as "user.no"
+		from 
+		        playlists
+		where 
+		        user_no = #{value}
+	</select>
+	
+	<insert id="addPlaylist" parameterType="Playlist">
+	    insert into
+	    	playlists
+	    (playlist_no,playlist_title,user_no)
+	    values
+	    (playlist_seq.nextval,#{title},#{user.no})
+	</insert>
+
+	<delete id="deleteMusic" parameterType="int">
+		delete from
+			musics
+		where
+			music_no = #{value}
+	</delete>
+	
+	<insert id="addMusic" parameterType="Music">
+		insert into
+			musics
+		(music_no, music_title, music_artist, music_lyricist, music_composer, music_length, music_year, music_create_date, music_cover_img, music_filename, music_video, album_no, music_likes)
+		values
+		(music_seq.nextval, #{title}, #{artist}, #{lyricist}, #{composer}, #{lengths}, #{years}, sysdate, #{img}, #{filename}, #{video}, #{album.no}, 0)
+	</insert>
+	
+</mapper>   
