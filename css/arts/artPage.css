@@ -1,0 +1,653 @@
+@charset "UTF-8";
+
+.Con_ST {
+	position: relative;
+	display: block;
+	/* margin-left: 100px; */
+	width: 100%;
+	height: 328px;
+	overflow: hidden;
+	background: url(images/concert.jpg) no-repeat;
+}
+
+.Con_ST .wrap_Tview {
+	position: relative;
+	width: 900px;
+	margin-top: 44px;
+	margin-left: 56px;
+	display: block;
+}
+
+dl.Tview {
+	position: relative;
+	float: left;
+	width: 129px;
+	margin: 0 6px;
+	display: inline;
+	overflow: hidden;
+}
+
+dl.Tview dt.Tposter {
+	position: relative;
+	width: 129px;
+	height: 161px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+dl.Tview dt.Tposter a {
+	width: 129px;
+	height: 161px;
+	display: inline-block;
+}
+
+A:visited {
+	COLOR: #4F4F4F;
+	TEXT-DECORATION: none;
+}
+
+dl.Tview dt.Tposter .info {
+	position: absolute;
+	z-index: 10;
+	top: 118px;
+	left: 3px;
+	width: 123px;
+	height: 35px;
+	background: url(images/tp_bg_info.png);
+	_background: none;
+	_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/tp_bg_info.png',
+		sizingMethod='crop');
+	cursor: pointer;
+}
+
+dl.Tview dt.Tposter .info .txt1 {
+	display: block;
+	color: #e7e7e7;
+	text-align: center;
+	font-size: 11px;
+	margin-top: 5px;
+	height: 13px;
+	overflow: hidden;
+}
+
+dl.Tview dt.Tposter .info .txt2 {
+	display: block;
+	color: #ffcfce;
+	text-align: center;
+	font-size: 11px;
+	margin-top: 0;
+	height: 14px;
+	overflow: hidden;
+}
+
+dl.Tview dd {
+	position: relative;
+	color: #fff;
+	text-align: center;
+	font-size: 11px;
+	margin-left: 0px;
+}
+
+dl.Tview dd span.txt1 {
+	display: block;
+	width: 129px;
+	height: 14px;
+	color: #FFF;
+	text-align: center;
+	font-size: 12px;
+	font-weight: bold;
+	letter-spacing: -0.1em;
+	overflow: hidden;
+	margin-top: 7px;
+}
+
+dl.Tview dd span.txt2 {
+	display: block;
+	color: #a0a0a0;
+	text-align: center;
+	font-size: 11px;
+	margin-top: 3px;
+	letter-spacing: -0.1em;
+	height: 12px;
+	overflow: hidden;
+}
+
+dl.Tview dd span.txt3 {
+	display: block;
+	color: #a0a0a0;
+	text-align: center;
+	font-size: 11px;
+	font-family: arial;
+	letter-spacing: 0;
+	height: 11px;
+	overflow: hidden;
+}
+
+<!--
+두번째 칸-->.performance-second {
+	position: relative;
+	display: block;
+	width: 100%;
+	/* margin-bottom: 5px; */
+	overflow: hidden;
+}
+
+.second-left {
+	float: left;
+	width: 188px;
+	display: inline-block;
+}
+
+.second-middle {
+	float: left;
+	width: 510px;
+	overflow: hidden;
+}
+
+.second-right {
+	position: relative;
+	float: left;
+	width: 250px;
+	margin-left: 12px;
+	display: inline;
+	overflow: hidden;
+}
+
+.se-left-div {
+	float: left;
+	position: relative;
+	width: 178px;
+	height: 190px;
+	overflow: hidden;
+	margin-right: 10px;
+	display: inline;
+	background: url(images/sub_bg.png) -5px -5px no-repeat;
+	z-index: 1;
+}
+
+.se-left-dl dt {
+	position: relative;
+	width: 178px;
+	height: 40px;
+	background: url(images/titPlayCategory.gif) 15px 15px no-repeat;
+	top: -18px;
+	margin-bottom: 5px;
+}
+
+.se-left-dl span.tit {
+	display: none;
+	font-size: 0;
+}
+
+.se-left-dl dt span.num {
+	position: absolute;
+	right: 81px;
+	top: 18px;
+	color: #da6464;
+	text-decoration: underline;
+	font-family: tahoma;
+	font-size: 10px;
+	font-weight: bold;
+	letter-spacing: -0.1em;
+	text-align: right;
+	display: inline-block;
+}
+
+.se-left-div .last {
+	position: absolute;
+	bottom: -1px;
+	width: 178px;
+	height: 21px;
+	display: inline-block;
+	overflow: hidden;
+	background: url(images/sub_bg.png) -5px -481px no-repeat;
+	font-size: 0;
+	z-index: 2;
+}
+
+.se-left-bottom {
+	margin-left: 4px;
+	float: left;
+	display: inline-block;
+	margin-top: 2px;
+	font-size: 0;
+	left: 0px;
+	border: 1px solid #d5d5d5;
+}
+
+.se-left-bottom img {
+	height: 37px;
+	width: 145px;
+	margin: 11px;
+}
+
+.img-event {
+	z-index: 1;
+	background: url(images/111.png);
+}
+
+.middle-bar {
+	position: relative;
+	width: 510px;
+	height: 151px;
+	display: block;
+	background: url(images/sub_bg.png) -16px -638px no-repeat transparent;
+	z-index: 1;
+}
+
+.middle-middle {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+}
+
+body, h1, h2, h3, h4, h5, h6, form, div, em, img, ul, li, ol, fieldset,
+	label, dt, p {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+.middle-middle img {
+	width: 373px;
+	height: 149px;
+	z-index: 5;
+}
+
+.middle-bar ul {
+	position: absolute;
+	width: 150px;
+	z-index: 10;
+	right: 0px;
+	top: 1px;
+	margin-top: 2px;
+	margin-bottom: 0px;
+	height: 151px;
+}
+
+.middle-bar ul li {
+	/* width: 150px;
+      height: 24px;
+      overflow: hidden;
+      line-height: 200%;
+      margin-bottom: -4px;
+      display: inline-block; */
+	width: 150px;
+	height: 24px;
+	overflow: hidden;
+	/* line-height: 200%; */
+	margin-bottom: -1px;
+	margin-top: -2px;
+	display: inline-block;
+	line-height: 24px;
+}
+
+.color {
+	background: #c21111;
+}
+
+.font-color {
+	
+}
+
+.middle-bar ul li a {
+	width: 150px;
+	height: 24px;
+	display: inline-block;
+	text-align: left;
+	color: black;
+	/* #6c6d6f; */
+}
+
+A:visited {
+	COLOR: #4F4F4F;
+	TEXT-DECORATION: none;
+}
+
+A:link {
+	COLOR: #4F4F4F;
+	TEXT-DECORATION: none;
+}
+
+.middle-bar ul li a span {
+	display: block;
+	font-size: 12px;
+	padding: 2px 0 0 26px;
+	letter-spacing: -0.1em;
+	height: 24px;
+	line-height: 24px;
+	font-weight: 700;
+	text-size-adjust: 100%;
+}
+
+i {
+	display: inline-block;
+	position: absolute;
+	margin-left: 10px;
+	margin-top: 8px;
+	color: white;
+}
+
+.se-middle-bottom {
+	position: relative;
+	margin-top: 10px;
+}
+
+.se-middle-bottom dt {
+	height: 21px;
+	font-size: 0;
+}
+
+.se-middle-bottom span {
+	position: absolute;
+	right: 7px;
+	top: 1px;
+}
+
+.se-middle-bottom dd {
+	position: relative;
+	padding-top: 8px;
+	width: 510px;
+	height: 60px;
+	overflow: hidden;
+	vertical-align: top;
+}
+
+.se-middle-bottom dd {
+	position: relative;
+	padding-top: 8px;
+	width: 510px;
+	height: 60px;
+	overflow: hidden;
+	vertical-align: top;
+}
+
+.se-middle-bottom ul {
+	display: block;
+	width: 540px;
+	height: 60px;
+	text-align: left;
+}
+
+.se-right-div {
+	position: relative;
+	border: 1px solid #d5d5d5;
+}
+
+.se-right-bottom {
+	position: relative;
+	margin-top: 10px;
+	display: block;
+}
+
+.se-right-bottom img {
+	height: 90px;
+	width: 250px;
+}
+
+.se-right-div ul {
+	list-style-type: none;
+	display: inline;
+}
+
+.se-right-dl {
+	margin-top: 5px;
+	float: left;
+}
+
+.se-right-div dt {
+	margin-left: 22px;
+}
+
+.se-right-dd {
+	position: absolute;
+	top: -4px;
+	right: 27px;
+	border-bottom: 1px solid #d5d5d5;
+}
+
+.se-right-dd ul li {
+	display: block;
+	float: left;
+	height: 34px;
+}
+
+.se-right-dd ul li.selected {
+	border-bottom: 2px solid #595959;
+	height: 32px;
+}
+
+.se-right-dd ul li a {
+	font-size: 11px;
+	line-height: 38px;
+	letter-spacing: -1px;
+	color: #999;
+	display: block;
+	text-align: center;
+	padding: 0 6px 0 7px;
+	text-decoration: none;
+}
+
+ol.ranking {
+	text-align: left;
+	padding-bottom: 2px;
+}
+
+ol.ranking li {
+	width: 260px;
+	position: relative;
+	font-size: 0;
+	line-height: 0;
+	height: 19px;
+	width: 250px;
+	overflow: hidden;
+	color: #6c6d6f;
+	display: inline-block;
+	vertical-align: top;
+}
+
+ol.ranking li span.num {
+	display: block;
+	width: 21px;
+	height: 13px;
+	background: url(images/subRankNum.gif) 0 0 no-repeat;
+	top: 0px;
+	position: absolute;
+	left: 23px;
+}
+
+ol.ranking li span.num1 {
+	background-position: 0 0;
+}
+
+ol.ranking li span.num2 {
+	background-position: 0 -19px;
+}
+
+ol.ranking li span.num3 {
+	background-position: 0 -38px;
+}
+
+ol.ranking li span.num4 {
+	background-position: 0 -57px;
+}
+
+ol.ranking li span.num5 {
+	background-position: 0 -76px;
+}
+
+ol.ranking li span.name {
+	position: absolute;
+	left: 59px;
+	top: -2px;
+	font-size: 12px;
+	width: 165px;
+	line-height: 130%;
+	letter-spacing: -0.1em;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: normal;
+	height: 21px;
+}
+
+ol.ranking li span.name a {
+	display: inline-block;
+	width: 170px;
+}
+
+.third-wrap {
+	position: relative;
+	clear: both;
+	width: 100%;
+	margin-top: 10px;
+	border-top: 2px solid #6b6f81;
+}
+
+.third-issue {
+	position: relative;
+	overflow: hidden;
+	padding-bottom: 10px;
+	display: block;
+	_display: inline-block;
+	border: 1px solid #cdcdcd;
+	border-top: none;
+	background: url(images\bg_gr_gray.gif) bottom left repeat-x;
+}
+
+.third-issue p.tit {
+	position: relative;
+	padding: 12px 15px 7px 13px;
+}
+
+.third-issue .third-list {
+	position: relative;
+	margin: 0 0 7px 18px;
+	display: inline-block;
+}
+
+.third-issue dt.issue-obj {
+	position: relative;
+	float: left;
+	width: 115px;
+	height: 188px;
+	display: inline-block;
+	background: url(images/bg_off_poster.gif) top center no-repeat;
+}
+
+.third-issue dt.issue-obj a {
+	position: relative;
+	width: 115px;
+	height: 188px;
+	display: inline-block;
+	text-decoration: none;
+}
+
+.issue-obj div.thmb {
+	position: relative;
+	display: inline-block;
+	width: 95px;
+	height: 130px;
+	top: 12px;
+	left: 10px;
+}
+
+.issue-obj div.thmb img {
+	position: absolute;
+	z-index: 1;
+	cursor: pointer;
+	border: 1px solid #ececec;
+}
+
+.issue-obj p.info {
+	position: absolute;
+	display: black;
+	text-align: center;
+	cursor: pointer;
+}
+
+.issue-obj p.info .txt1 {
+	display: block;
+	font-weight: bold;
+	height: 14px;
+	overflow: hidden;
+	letter-spacing: -0.1em;
+	margin-top: 8px;
+}
+
+.issue-obj p.info .txt2 {
+	display: block;
+	font-size: 11px;
+	color: #adadad;
+	height: 12px;
+	overflow: hidden;
+	letter-spacing: -0.1em;
+	margin: 2px 0;
+}
+
+.issue-obj p.info .txt3 {
+	display: block;
+	font-size: 11px;
+	color: #6c6d6f;
+	height: 12px;
+	overflow: hidden;
+	letter-spacing: -0.1em;
+}
+
+.third-issue-on {
+	position: relative;
+	float: left;
+	top: 0px;
+	width: 115px;
+	height: 188px;
+	display: inline;
+	background: url(images/bg_over_poster.gif) top center no-repeat;
+}
+
+.third-issue-on .thumb {
+	position: relative;
+	display: inline-block;
+	width: 95px;
+	height: 123px;
+	top: 7px;
+	left: 10px;
+}
+
+.third-issue-on .thumb img {
+	position: absolute;
+	z-index: 1;
+	/* border: 1px solid #c21818; */
+}
+
+.third-issue-on p.info {
+	position: relative;
+	display: inline-block;
+	text-align: center;
+}
+
+.third-issue-on .info span.txt1 {
+	display: block;
+	width: 115px;
+	font-weight: bold;
+	color: #FFF;
+	height: 14px;
+	overflow: hidden;
+	letter-spacing: -0.1em;
+	margin-top: 5px;
+	line-height: 130%;
+}
+
+.third-issue-on .info span.txt2 {
+	display: block;
+	font-size: 11px;
+	color: #ffc6c6;
+	height: 12px;
+	overflow: hidden;
+	letter-spacing: -0.1em;
+	margin: 2px 0;
+}
+
+.third-issue-on .info .btn {
+	display: block;
+	margin-top: 8px;
+}

@@ -1,0 +1,252 @@
+/* 상단 버튼 */
+    .cont-wrap {
+        margin: 0 auto;
+        background: none;
+    }
+    .cont-wrap .cont-section {
+        position: relative;
+        width: 1008px;
+        margin: 0 auto;
+    }
+    .cont-wrap .cont-section .cont-my {
+        position: relative;
+        z-index: 10;
+        display: block;
+        width: 1008px;
+    }
+    .cont-wrap .cont-section .cont-my .cont-menu > h2 {
+        margin: 25px 0 12px;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 30px;
+        letter-spacing: -2px;
+    }
+    .cont-wrap .cont-section .cont-my .cont-menu .tab-menu .nav {
+        position: relative;
+        width: 1008px;
+        border-top: 4px solid #848484;
+        border-bottom: 1px solid #dbdbdb;
+        height: 56px;
+    } 
+	.cont-wrap .cont-section .cont-my .cont-menu .tab-menu .nav > li {
+        width: 150px;
+        height: 56px;
+	}        
+	.cont-wrap .cont-section .cont-my .cont-menu .tab-menu .nav > li > a {
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        color: #333333;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+	}  
+    
+    /*.cont-wrap .cont-section .cont-my .tab-content:not(.active) {
+        display: none;
+    }*/
+    
+   	.tab-content {
+   		height: 900px;
+   		position: relative;
+   		
+   	}
+    
+    /* 테마사진 + 프로필사진 넣는곳 */
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .theme {
+        position: relative;
+        width: 1008px;
+        height: 264px;
+        background-color: #e6e6e6; 
+        margin-top: 68px;
+    }
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .theme > div {
+        position: relative;
+        width: 1008px;
+        height: 264px;
+        /* background-image: url(/jhta/resources/images/mypage/ADER_PC.jpg); */
+    }
+    .cont-wrap .cont-section .cont-my  .tab-content .tab-pane .theme .profile-section {
+        position: relative;
+        top: -128px;
+        left: 0;
+        width: 1008px;
+        height: 156px;
+        display: block;
+        background-color: rgba(255,255,255,0.5);
+    }
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .theme .profile-section .profile {
+        
+        float: left;
+        position: relative;
+        width: 130px;
+        height: 130px;
+        margin: -32px 0 0 24px;
+        padding: 5px;
+        background: white;
+    }
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .theme .profile-section .profile > img{
+        width: 120px;
+        height: 120px;
+        border: none;
+        line-height: 0;
+        font-size: 0;
+
+    }
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .theme .profile-section .profile-des {
+        top:10px;
+    }   
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .theme .profile-section .profile-des-section {  
+        margin-left: 170px;
+    }    
+    
+    
+    /* 방명록 쓰는곳 css */
+    .cont-wrap .cont-section .cont-my .coment-section {
+        position: relative;
+        margin-top: 38px !important;
+    }    
+    .cont-wrap .cont-section .cont-my .coment-section .visitor > h3 {
+        font-weight: bold;
+        line-height: 22px;
+        letter-spacing: -1px;
+        font-size: 18px;
+        margin-bottom: 11px;
+        padding-left: 10px;
+        height: 24px;
+        text-align: end;
+    }       
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-box {
+        
+        position: relative;
+        margin-bottom: 24px;
+        padding: 15px 101px 8px 28px;
+        background-color: #f5f5f5;
+        border: 1px solid #d1d1d1;
+        z-index: 40;
+        zoom: 1;
+        height: 130px;
+    }   
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-box .profile-round {
+        position: relative;
+        float: left;
+        margin-top: 13px;
+        left: -100px;
+    }    
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-box .profile-round > img {
+        
+        cursor: pointer;
+        width: 54px;
+        height: 54px;
+        border-radius: 100%;
+    }   
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-box .textbox {
+        width: 732px;
+        float: left;
+        margin-left: 25px;
+        top: -67px;
+   	 	right: -65px;
+    	position: relative;
+    }   
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-box .textbox > textarea {
+        position: relative;
+        padding-bottom: 19px;
+        border: 1px solid #d1d1d1;
+        background-color: white;
+        width: 782px;
+        height: 81px;
+    }   
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-box .coment-button {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        border: 1px solid #d1d1d1;
+    }   
+    .cont-wrap .cont-section .cont-my .coment-section .coment-box .coment-button > button {
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        text-decoration: none !important;
+        float: right;
+        width: 80px;
+        height: 80px;
+    }
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-history {
+        width: 1008px;
+        height: 400px;
+    }
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-history > strong {
+		margin-left: 181px;
+	}
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane .coment-section .coment-history .coment-history-border {
+        border-bottom: 1px solid #d1d1d1;
+        padding: 26px 0 53px;
+        text-align: center;
+        width: 1008px;
+        height: 105px;
+    }
+    
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane {
+        
+    }    
+
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane > .cont-like {
+        margin-top: 120px;
+        
+    }    
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane > .cont-like .title-top > span {
+        text-align: right;
+        margin: 0 0 20px 0;
+    }    
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane > .cont-like .title-body {
+        width: 1008px;
+    }    
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane > .cont-like .title-body > table > thead > tr > th {
+        width: 1008px;
+        border-top: 1px solid black;
+        border-bottom: 2px solid #343084;
+        color: #353054;
+        text-align: center;
+    }     
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane > .cont-like .title-body > table > tbody > tr {
+        width: 1008px;
+        border-bottom: 1px solid #666;
+    }   
+    .cont-wrap .cont-section .cont-my .tab-content .tab-pane > .cont-like .title-body > table > tbody > tr > td {
+        color: #1a1a1a;
+        text-align: center;
+    }
+    
+    
+    .cont-wrap .cont-section .cont-my .tab-pane .cont-playlist {
+        margin-top: 120px;
+    }
+    
+    
+
+    
+    
+    .cont-wrap .cont-section .cont-my .tab-pane .cont-much {
+        margin-top: 120px;
+    }
+    
+    
+    .cont-wrap .cont-section .cont-my .tab-fan {}
+    
+    
+    .cont-wrap .cont-section .cont-my .tab-friend {}
+    .cont-wrap .cont-section .cont-my .tab-friend .con-playlist {
+    	margin-top: 110px;
+    }
+
+    .cont-wrap .cont-section .cont-my .tab-friend .con-playlist .title-body {}
+    .cont-wrap .cont-section .cont-my .tab-friend .con-playlist .title-body > table {}
+    .cont-wrap .cont-section .cont-my .tab-friend .con-playlist .title-body > table > tbody {}
+    .cont-wrap .cont-section .cont-my .tab-friend .con-playlist .title-body > table > tbody > tr {}
+    .unfollow-btn > a:hover {
+    	background-color: red;
+    	color:white;
+    }
+
